@@ -1,0 +1,40 @@
+ var paramsData = window.location.href.split('?');
+      var rcdID  = paramsData[1].split('=')[1];
+      console.log(rcdID);
+      component.set("v.endp",rcdID);
+      var action = component.get("c.getReportDetails");
+      action.setParams({
+         // "endpoint" : "get_ownership_data_long"
+         "endpoint" : component.get("v.endp")
+      });
+      action.setCallback(this,function(response)
+      {
+          var state = response.getState();
+          if(state === "SUCCESS")
+          {
+             /*var res = response.getReturnValue();
+             
+             console.log('Response-->'+JSON.parse(res.response));
+             component.set("v.resInfo",res);*/
+             //var result=JSON.parse(JSON.stringify(response.getReturnValue()));
+             var result = response.getReturnValue();
+             var re = JSON.stringify(result);
+             var r = JSON.parse(re);
+             component.set("v.resInfo",r);
+             for(var i = 0;i<r.length;i++)
+             {
+                console.log('Namememeeh--->'+r[i].name);
+             }
+            
+            
+                
+             
+            // component.set("v.resInfo",res);
+             
+          }
+          else 
+          {
+              console.log('Error update-->'+JSON.stringify(response.getError()));
+          }
+      });
+      $A.enqueueAction(action);   
