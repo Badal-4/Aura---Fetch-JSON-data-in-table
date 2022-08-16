@@ -1,0 +1,55 @@
+public with sharing class CustomerCommunity_ReportDetailCtrl {
+    @AuraEnabled
+    public static List<wrapper> getReportDetails(String endpoint)
+    {
+        
+        System.debug('Endpoint-->'+endpoint);
+        AuraResponse response =AccController.getPostCallout('postgrest',endpoint,'{"fsym":"TW997W-S"}', false);
+       //AuraResponse response =AccController.getPostCallout('postgrest',endpoint,'{}', false);
+       //AuraResponse response =AccController.getPostCallout('postgrest',endpoint,'{"fsym":" "}', false);
+      /* System.debug('JSON-->'+response);
+        String res= System.JSON.serialize(response);
+    
+        System.debug('JSO1---->'+res);
+
+        Map<String,Object> rawObj = (Map<String,Object>) JSON.deserializeUntyped(res);
+        System.debug('JSOn2---->'+rawObj);
+
+         String responseObj = (String)rawObj.get('response');
+        // List<Object> responseObj = (List<Object>)rawObj.get('response');
+            System.debug('JSOn3---->'+responseObj);
+       return System.JSON.deserialize(responseObj);*/
+       String res= System.JSON.serialize(response);
+       System.debug('JSON1--->'+res);
+
+       Map<String,Object> rawObj = (Map<String,Object>) JSON.deserializeUntyped(res);
+       System.debug('JSOn2---->'+rawObj);
+
+      
+       
+    
+       String responseObj = (String)rawObj.get('response');
+       
+
+     //  List<Wrapper> convertedData = (List<Wrapper>)JSON.deserialize(responseObj,List<Wrapper>.Class);
+     List<Wrapper> convertedData = (List<Wrapper>)JSON.deserialize(responseObj,List<Wrapper>.Class);
+     System.debug('Converted--->'+convertedData);
+   
+       
+       return convertedData;
+    }
+
+    public class Wrapper 
+    {
+        @AuraEnabled
+        public String type{get;set;}
+        @AuraEnabled
+        public Integer rank{get;set;}
+        @AuraEnabled
+        public String name{get;set;}
+        @AuraEnabled
+        public Integer value{get;set;}
+        @AuraEnabled
+        public  Decimal value_pct{get;set;}
+    }
+}
